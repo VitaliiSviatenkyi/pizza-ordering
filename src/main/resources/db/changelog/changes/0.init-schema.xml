@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="Task-004-add-table-customers_v1.0" author="Vitalii_Sviatenkyi">
+        <createTable tableName="customers">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(30)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="address" type="varchar(30)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="orderList_id" type="int">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Task-004-add-table-orders_v1.1" author="Vitalii_Sviatenkyi">
+        <createTable tableName="orders">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="customer_id" type="int">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="pizzaList_id" type="int">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="creationDate" type="timestamp">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Task-004-add-table-pizzas_v1.2" author="Vitalii_Sviatenkyi">
+        <createTable tableName="pizzas">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(30)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="price" type="numeric(7,2)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Task-004-addFK-table-orders_v1.3" author="Vitalii_Sviatenkyi">
+        <addForeignKeyConstraint baseColumnNames="customer_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_order_customer"
+                                 referencedColumnNames="id"
+                                 referencedTableName="customers"/>
+    </changeSet>
+
+    <changeSet id="Task-004-addFK-table-orders_v1.4" author="Vitalii_Sviatenkyi">
+        <addForeignKeyConstraint baseColumnNames="pizzaList_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_order_pizza"
+                                 referencedColumnNames="id"
+                                 referencedTableName="pizzas"/>
+    </changeSet>
+
+    <changeSet id="Task-004-addFK-table-customers_v1.5" author="Vitalii_Sviatenkyi">
+        <addForeignKeyConstraint baseColumnNames="orderList_id"
+                                 baseTableName="customers"
+                                 constraintName="fk_customer_order"
+                                 referencedColumnNames="id"
+                                 referencedTableName="orders"/>
+    </changeSet>
+
+</databaseChangeLog>
