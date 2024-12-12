@@ -5,15 +5,24 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -24,40 +33,13 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToMany
-    @JoinColumn(name = "pizzaList_id")
+    @ManyToMany
+    @JoinTable(
+            name = "order_pizzas",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "pizza_id"))
     private List<Pizza> pizzaList;
 
     private LocalDateTime creationDate;
 
-    public Order() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public List<Pizza> getPizzaList() {
-        return pizzaList;
-    }
-
-    public void setPizzaList(List<Pizza> pizzaList) {
-        this.pizzaList = pizzaList;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
 }
