@@ -15,9 +15,6 @@
             <column name="address" type="varchar(30)">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="orderList_id" type="int">
-                <constraints nullable="true" unique="false"/>
-            </column>
         </createTable>
     </changeSet>
 
@@ -29,10 +26,7 @@
             <column name="customer_id" type="int">
                 <constraints nullable="false" unique="false"/>
             </column>
-            <column name="pizzaList_id" type="int">
-                <constraints nullable="false" unique="false"/>
-            </column>
-            <column name="creationDate" type="timestamp">
+            <column name="creation_date" type="timestamp">
                 <constraints nullable="false" unique="false"/>
             </column>
         </createTable>
@@ -53,30 +47,15 @@
     </changeSet>
 
     <changeSet id="Task-004-addFK-table-orders_v1.3" author="Vitalii_Sviatenkyi">
-        <addForeignKeyConstraint baseColumnNames="customer_id"
-                                 baseTableName="orders"
-                                 constraintName="fk_order_customer"
-                                 referencedColumnNames="id"
-                                 referencedTableName="customers"/>
+        <addForeignKeyConstraint
+                baseColumnNames="customer_id"
+                baseTableName="orders"
+                referencedColumnNames="id"
+                referencedTableName="customers"
+                constraintName="fk_orders_customer"/>
     </changeSet>
 
-    <changeSet id="Task-004-addFK-table-orders_v1.4" author="Vitalii_Sviatenkyi">
-        <addForeignKeyConstraint baseColumnNames="pizzaList_id"
-                                 baseTableName="orders"
-                                 constraintName="fk_order_pizza"
-                                 referencedColumnNames="id"
-                                 referencedTableName="pizzas"/>
-    </changeSet>
-
-    <changeSet id="Task-004-addFK-table-customers_v1.5" author="Vitalii_Sviatenkyi">
-        <addForeignKeyConstraint baseColumnNames="orderList_id"
-                                 baseTableName="customers"
-                                 constraintName="fk_customer_order"
-                                 referencedColumnNames="id"
-                                 referencedTableName="orders"/>
-    </changeSet>
-
-    <changeSet id="Task-007-add-endpoints-pizza_v1.6" author="Vitalii_Sviatenkyi">
+    <changeSet id="Task-007-add-endpoints-pizza_v1.4" author="Vitalii_Sviatenkyi">
         <insert tableName="pizzas">
             <column name="name" value="Hawaii"/>
             <column name="price" value="99.99"/>
@@ -98,5 +77,50 @@
             <column name="price" value="134"/>
         </insert>
     </changeSet>
+
+    <changeSet id="Task-004-add-table-order_pizzas_v1.5" author="Vitalii_Sviatenkyi">
+        <createTable tableName="order_pizzas">
+            <column name="order_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pizza_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey
+                tableName="order_pizzas"
+                columnNames="order_id, pizza_id"
+                constraintName="pk_order_pizzas"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="order_id"
+                baseTableName="order_pizzas"
+                constraintName="fk_order"
+                referencedColumnNames="id"
+                referencedTableName="orders"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="pizza_id"
+                baseTableName="order_pizzas"
+                constraintName="fk_pizza"
+                referencedColumnNames="id"
+                referencedTableName="pizzas"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="order_id"
+                baseTableName="order_pizzas"
+                referencedColumnNames="id"
+                referencedTableName="orders"
+                constraintName="fk_order_pizza_order"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="pizza_id"
+                baseTableName="order_pizzas"
+                referencedColumnNames="id"
+                referencedTableName="pizzas"
+                constraintName="fk_order_pizza_pizza"/>
+    </changeSet>
+
 
 </databaseChangeLog>
