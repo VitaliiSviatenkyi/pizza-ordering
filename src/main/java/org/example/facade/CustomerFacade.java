@@ -10,4 +10,10 @@ public interface CustomerFacade {
     CustomerDto save(CreateCustomerDto createCustomerDto);
 
     List<CustomerDto> findAll();
+
+    CustomerDto findById(Integer id);
+
+    CustomerDto update(CustomerDto customerDto);
+
+    void delete(Integer id);
 }

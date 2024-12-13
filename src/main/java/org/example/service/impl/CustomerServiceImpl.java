@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.exception.EntityNotFoundException;
 import org.example.model.Customer;
 import org.example.repository.CustomerRepository;
 import org.example.service.CustomerService;
@@ -24,5 +25,24 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Customer> findAll() {
         return customerRepository.findAll();
+    }
+
+    @Override
+    public Customer findById(Integer id) {
+        return customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+    }
+
+    @Override
+    public Customer update(Customer customer) {
+        Customer updateCustomer = customerRepository.findById(customer.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+        updateCustomer.setName(customer.getName());
+        updateCustomer.setAddress(customer.getAddress());
+        return customerRepository.save(updateCustomer);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        customerRepository.deleteById(id);
     }
 }
