@@ -4,8 +4,11 @@ import org.example.facade.PizzaFacade;
 import org.example.web.dto.CreatePizzaDto;
 import org.example.web.dto.PizzaDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +30,20 @@ public class PizzaController {
     @GetMapping
     public List<PizzaDto> findAll() {
         return pizzaFacade.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public PizzaDto findById(@PathVariable Integer id) {
+        return pizzaFacade.findById(id);
+    }
+
+    @PutMapping
+    public PizzaDto update(@RequestBody PizzaDto pizzaDto) {
+        return pizzaFacade.update(pizzaDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+        pizzaFacade.delete(id);
     }
 }

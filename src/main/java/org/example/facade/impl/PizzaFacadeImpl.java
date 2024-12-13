@@ -31,4 +31,22 @@ public class PizzaFacadeImpl implements PizzaFacade {
         return pizzaService.findAll().stream().map(pizza -> conversionService.convert(pizza, PizzaDto.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public PizzaDto findById(Integer id) {
+        Pizza pizza = pizzaService.findById(id);
+        return conversionService.convert(pizza, PizzaDto.class);
+    }
+
+    @Override
+    public PizzaDto update(PizzaDto pizzaDto) {
+        Pizza pizza = conversionService.convert(pizzaDto, Pizza.class);
+        pizza = pizzaService.update(pizza);
+        return conversionService.convert(pizza, PizzaDto.class);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        pizzaService.delete(id);
+    }
 }

@@ -9,4 +9,10 @@ public interface PizzaService {
     Pizza save(Pizza pizza);
 
     List<Pizza> findAll();
+
+    Pizza findById(Integer id);
+
+    Pizza update(Pizza pizza);
+
+    void delete(Integer id);
 }
