@@ -31,4 +31,22 @@ public class CustomerFacadeImpl implements CustomerFacade {
         return customerService.findAll().stream().map(customer -> conversionService.convert(customer, CustomerDto.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public CustomerDto findById(Integer id) {
+        Customer customer = customerService.findById(id);
+        return conversionService.convert(customer, CustomerDto.class);
+    }
+
+    @Override
+    public CustomerDto update(CustomerDto customerDto) {
+        Customer customer = conversionService.convert(customerDto, Customer.class);
+        customer = customerService.update(customer);
+        return conversionService.convert(customer, CustomerDto.class);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        customerService.delete(id);
+    }
 }
