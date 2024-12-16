@@ -33,10 +33,9 @@ public class OrderServiceImpl implements OrderService {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
 
-        List<Pizza> pizzas = pizzaRepository.findAllById(pizzaIds);
-        if (pizzas.isEmpty()) {
-            throw new EntityNotFoundException("No pizzas found for the given IDs");
-        }
+        List<Pizza> pizzas = pizzaIds.stream().map(pizzaId -> pizzaRepository.findById(pizzaId)
+                .orElseThrow(() -> new ProductNotFoundException("Pizza not found for ID: " + pizzaId))).toList();
+
         Order order = Order.builder()
                 .customer(customer)
                 .pizzaList(pizzas)

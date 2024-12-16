@@ -80,46 +80,32 @@
 
     <changeSet id="Task-004-add-table-order_pizzas_v1.5" author="Vitalii_Sviatenkyi">
         <createTable tableName="order_pizzas">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+
             <column name="order_id" type="int">
                 <constraints nullable="false"/>
             </column>
+
             <column name="pizza_id" type="int">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addPrimaryKey
-                tableName="order_pizzas"
-                columnNames="order_id, pizza_id"
-                constraintName="pk_order_pizzas"/>
-
         <addForeignKeyConstraint
                 baseColumnNames="order_id"
                 baseTableName="order_pizzas"
-                constraintName="fk_order"
+                constraintName="fk_order_pizzas_order"
                 referencedColumnNames="id"
                 referencedTableName="orders"/>
 
         <addForeignKeyConstraint
                 baseColumnNames="pizza_id"
                 baseTableName="order_pizzas"
-                constraintName="fk_pizza"
+                constraintName="fk_order_pizzas_pizza"
                 referencedColumnNames="id"
                 referencedTableName="pizzas"/>
-
-        <addForeignKeyConstraint
-                baseColumnNames="order_id"
-                baseTableName="order_pizzas"
-                referencedColumnNames="id"
-                referencedTableName="orders"
-                constraintName="fk_order_pizza_order"/>
-
-        <addForeignKeyConstraint
-                baseColumnNames="pizza_id"
-                baseTableName="order_pizzas"
-                referencedColumnNames="id"
-                referencedTableName="pizzas"
-                constraintName="fk_order_pizza_pizza"/>
     </changeSet>
 
 
