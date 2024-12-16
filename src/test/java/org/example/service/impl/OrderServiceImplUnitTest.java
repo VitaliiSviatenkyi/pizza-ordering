@@ -2,6 +2,7 @@ package org.example.service.impl;
 
 import org.example.AbstractUnitTest;
 import org.example.model.Order;
+import org.example.model.Pizza;
 import org.example.repository.CustomerRepository;
 import org.example.repository.OrderRepository;
 import org.example.repository.PizzaRepository;
@@ -13,8 +14,8 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mockStatic;
@@ -44,11 +45,15 @@ class OrderServiceImplUnitTest extends AbstractUnitTest {
 
             when(customerRepositoryMock.findById(expected.getCustomer().getId()))
                     .thenReturn(Optional.ofNullable(expected.getCustomer()));
-            when(pizzaRepositoryMock.findAllById(List.of(expected.getPizzaList().size())))
-                    .thenReturn(expected.getPizzaList());
+
+            for (Pizza pizza : expected.getPizzaList()) {
+                when(pizzaRepositoryMock.findById(pizza.getId()))
+                        .thenReturn(Optional.of(pizza));
+            }
             when(orderRepositoryMock.save(expected)).thenReturn(expected);
             //when
-            Order actual = sut.save(expected.getCustomer().getId(), List.of(expected.getPizzaList().size()));
+            Order actual = sut.save(expected.getCustomer().getId(),
+                    expected.getPizzaList().stream().map(Pizza::getId).collect(Collectors.toList()));
             //then
             assertEquals(expected, actual);
         }
